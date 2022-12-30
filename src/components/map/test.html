@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Tooltips</title>
+    <style>
+        html,
+        body,
+        #divMap {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #FFF;
+            overflow: hidden;
+            font-family: "Trebuchet MS";
+        }
+
+        #bcMain {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://js.arcgis.com/3.24/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.24/esri/css/esri.css">
+    <script src="https://js.arcgis.com/3.24/"></script>
+    <script>    var lastState = null; require(["esri/map", "esri/layers/FeatureLayer", "esri/graphic", "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol", "esri/Color", "esri/InfoTemplate", "dojo/parser", "dojo/on", "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!"],
+            function (Map, FeatureLayer, Graphic, SimpleFillSymbol, SimpleLineSymbol, Color, InfoTemplate, parser, on, BorderContainer, ContentPane) {
+                parser.parse(); var sUrlUSAService = "https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/2";
+                var mapMain = new Map("divMap", {
+                    basemap: "satellite", center: [-119.65, 36.87
+
+                    ], zoom: 4
+                });
+                var infoTemplate = new InfoTemplate("<b>State Name</b>", "${state_name}");
+                var lyrUSA = new FeatureLayer(sUrlUSAService, { mode: FeatureLayer.MODE_ONDEMAND, infoTemplate: infoTemplate, outFields: ["state_name"] });
+                mapMain.addLayers([lyrUSA]);
+                lyrUSA.on("mouse-move", function (evt) {
+                    if (evt.graphic.attributes["state_name"] === lastState) { return; }
+                    setTimeout(function () {
+                        mapMain.infoWindow.setFeatures([evt.graphic]);
+                        mapMain.infoWindow.show(evt.screenPoint, mapMain.getInfoWindowAnchor(evt.screenPoint));
+                        lastState = evt.graphic.attributes["state_name"];
+                    }, 500);
+                });
+            });</script>
+</head>
+
+<body class="claro">
+    <div id="bcMain" data-dojo-type="dijit/layout/BorderContainer"
+        data-dojo-props="design:'headline', liveSplitters:'true'">
+        <div id="cpCenter" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+            <div id="divMap"></div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍‍
